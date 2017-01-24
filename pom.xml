@@ -4,7 +4,7 @@
     
     <!-- Change these to match your group and artifact IDs -->
     <groupId>il.ac.bgu.cs.bp</groupId>
-    <artifactId>SampleBPjsProject</artifactId>
+    <artifactId>BPJSRobocodeAgent</artifactId>
     <!-- / Change these to match your group and artifact IDs -->
     
     <version>0.5-DEV</version>
@@ -20,5 +20,14 @@
             <artifactId>BPjs</artifactId>
             <version>[0.8.0, 0.9.9]</version>
         </dependency>
+
+<!-- https://mvnrepository.com/artifact/net.sf.robocode/robocode.api -->
+<dependency>
+    <groupId>net.sf.robocode</groupId>
+    <artifactId>robocode.api</artifactId>
+    <version>1.9.2.1</version>
+</dependency>
+               
+        
     </dependencies>
 </project>
