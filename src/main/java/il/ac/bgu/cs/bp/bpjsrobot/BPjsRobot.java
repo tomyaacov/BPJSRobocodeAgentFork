@@ -11,7 +11,7 @@ import robocode.StatusEvent;
 
 public class BPjsRobot extends AdvancedRobot {
 
-	final SingleResourceBProgram bprog = new SingleResourceBProgram("MyFirstRobot.js");
+	final SingleResourceBProgram bprog = new SingleResourceBProgram("MyFirstRobot.js"); 
 
 	public void run() {
 
