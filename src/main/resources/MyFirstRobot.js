@@ -21,6 +21,8 @@ var Scan = bp.EventSet('', function(e) {
 });
 
 bp.registerBThread(function() {
+	bp.log.info('Running fire-on-scan b-thread');
+
 	while (true) {
 		bsync({ waitFor : Scan });
 		bsync({ request : Fire(1.0) });
