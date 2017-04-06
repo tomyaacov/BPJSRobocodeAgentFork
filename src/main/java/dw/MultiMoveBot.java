@@ -62,7 +62,7 @@ public class MultiMoveBot extends AdvancedRobot {
 		width = this.getBattleFieldWidth();
 		y = this.getY();
 		x = this.getX();
-		// turnRight(getHeading());
+		turnRight(getHeading());
 		if (x > width / 2)
 			turnRight(threeQuarterTurn - getHeading());
 		else

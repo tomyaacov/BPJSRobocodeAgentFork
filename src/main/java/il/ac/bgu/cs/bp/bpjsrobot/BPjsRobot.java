@@ -1,5 +1,7 @@
 package il.ac.bgu.cs.bp.bpjsrobot;
 
+import org.mozilla.javascript.Scriptable;
+
 import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.SingleResourceBProgram;
 import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.listeners.StreamLoggerListener;
 import il.ac.bgu.cs.bp.bpjsrobot.events.sensors.MotionEnded;
@@ -11,10 +13,16 @@ import robocode.StatusEvent;
 
 public class BPjsRobot extends AdvancedRobot {
 
-	final SingleResourceBProgram bprog = new SingleResourceBProgram("MyFirstRobot.js"); 
+	BPjsRobot robot = this;
+	
+	private SingleResourceBProgram bprog = new SingleResourceBProgram("MyFirstRobot.js") {
+		protected void setupProgramScope(Scriptable scope) {
+			putInGlobalScope("robot", robot);
+			super.setupProgramScope(scope);
+		}
+	};
 
 	public void run() {
-
 		bprog.setDaemonMode(true);
 		bprog.addListener(new StreamLoggerListener());
 		bprog.addListener(new RobocodeEventListener(this));
@@ -33,8 +41,6 @@ public class BPjsRobot extends AdvancedRobot {
 	@Override
 	public void onStatus(StatusEvent e) {
 		bprog.enqueueExternalEvent(new Status(e));
-
-		System.out.println("e.getStatus().getDistanceRemaining()=" + e.getStatus().getDistanceRemaining());
 
 		if (e.getStatus().getDistanceRemaining() == 0) {
 			bprog.enqueueExternalEvent(MotionEnded.event);
