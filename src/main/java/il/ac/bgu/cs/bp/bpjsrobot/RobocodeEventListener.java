@@ -31,6 +31,7 @@ public class RobocodeEventListener implements BProgramListener {
 
 		if (theEvent instanceof RobotActionEvent) {
 			((RobotActionEvent) theEvent).act(robot);
+			robot.execute(); //TODO: for testing - remove after
 		} else if (theEvent instanceof RobotSensorEvent) {
 		} else {
 			robot.out.println("Uhandled BPjs event:" + theEvent);

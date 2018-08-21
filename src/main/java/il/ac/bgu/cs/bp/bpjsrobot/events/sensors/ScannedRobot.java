@@ -7,7 +7,7 @@ public class ScannedRobot extends RobotSensorEvent {
 	ScannedRobotEvent event;
 
 	public ScannedRobot(ScannedRobotEvent event) {
-		super("ScannedRobot");
+		super("ScannedRobot");// TODO: shouldnt we add event to the constructor or override get data
 		this.event = event;
 	}
 
@@ -15,6 +15,9 @@ public class ScannedRobot extends RobotSensorEvent {
 	public String toString() {
 		return "ScannedRobot [event=" + event + "]";
 	}
-	
-	
+
+	@Override
+	public Object getData() {
+		return event;
+	}
 }

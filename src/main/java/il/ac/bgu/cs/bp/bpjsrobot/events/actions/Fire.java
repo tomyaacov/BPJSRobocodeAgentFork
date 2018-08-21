@@ -13,8 +13,9 @@ public class Fire extends RobotActionEvent {
 
 	@Override
 	public void act(BPjsRobot robot) {
-		robot.out.println("fire...");
+		//robot.out.println("fire...");
 		robot.setFire(power);
+		robot.execute(); //TODO: for testing - remove
 	}
 
 	@Override
