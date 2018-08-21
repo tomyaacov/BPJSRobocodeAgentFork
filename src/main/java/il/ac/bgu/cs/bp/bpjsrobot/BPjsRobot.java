@@ -11,7 +11,7 @@ public class BPjsRobot extends AdvancedRobot {
 
 	BPjsRobot robot = this;
 	
-	private SingleResourceBProgram bprog = new SingleResourceBProgram("FireBP.js", "FireBP.js", new RobocodeEventSelectionStrategy()) {
+	protected SingleResourceBProgram bprog = new SingleResourceBProgram("MyFirstRobot.js", "MyFirstRobot.js", new RobocodeEventSelectionStrategy()) {
 		protected void setupProgramScope(Scriptable scope) {
 			putInGlobalScope("robot", robot);// enables getting robots status
 			super.setupProgramScope(scope);
@@ -42,6 +42,10 @@ public class BPjsRobot extends AdvancedRobot {
 		if (e.getStatus().getDistanceRemaining() == 0) {
 			bprog.enqueueExternalEvent(MotionEnded.event);
 		}
+
+		if (e.getStatus().getTurnRemaining() == 0) {
+			bprog.enqueueExternalEvent(RevEnded.event);
+		}
 	}
 
 	@Override
@@ -58,5 +62,8 @@ public class BPjsRobot extends AdvancedRobot {
 	public void onHitRobot(HitRobotEvent e){
 		bprog.enqueueExternalEvent(new HitRobot(e));
 	}
+
+	@Override
+	public void onHitWall(HitWallEvent e) { bprog.enqueueExternalEvent(new HitWall(e));}
 
 }
