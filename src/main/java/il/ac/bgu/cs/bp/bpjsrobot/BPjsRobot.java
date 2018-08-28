@@ -46,6 +46,10 @@ public class BPjsRobot extends AdvancedRobot {
 		if (e.getStatus().getTurnRemaining() == 0) {
 			bprog.enqueueExternalEvent(RevEnded.event);
 		}
+
+		if (e.getStatus().getGunTurnRemaining() == 0) {
+			bprog.enqueueExternalEvent(GunRevEnded.event);
+		}
 	}
 
 	@Override

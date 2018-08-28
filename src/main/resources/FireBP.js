@@ -1,6 +1,6 @@
 importPackage(Packages.il.ac.bgu.cs.bp.bpjsrobot.events.actions);
 importPackage(Packages.il.ac.bgu.cs.bp.bpjsrobot.events.sensors);
-//importPackage(Packages.net.sf.robocode.util);//TODO: still need to debug this
+importPackage(Packages.robocode.util);
 importPackage(java.awt);
 /*
 veryFar = 9999.0;
@@ -24,6 +24,16 @@ var HitByBulletEventSet = bp.EventSet('', function(e) {
 var HitRobotEventSet = bp.EventSet('', function(e) {
     return (e instanceof HitRobot);
 });
+var GunRevEndedEventSet = bp.EventSet('', function(e) {
+    return (e instanceof GunRevEnded);
+});
+var RevEndedEventSet = bp.EventSet('', function(e) {
+    return (e instanceof RevEnded);
+});
+var MotionEndedEventSet = bp.EventSet('', function(e) {
+    return (e instanceof MotionEnded);
+});
+
 
 bp.registerBThread("run", function() {
 	bsync({request : SetBodyColor(Color.orange)});
@@ -32,7 +42,8 @@ bp.registerBThread("run", function() {
     bsync({request : SetScanColor(Color.red)});
     bsync({request : SetBulletColor(Color.red)});
     while (true) {
-        bsync({request : TurnGunRight(5)});
+        bsync({request : SetTurnGunRight(5)});
+        bsync({waitFor : GunRevEndedEventSet});
 	}
 });
 
@@ -40,12 +51,13 @@ bp.registerBThread("onScannedRobot", function() {
 	while (true){
 		var e1 = bsync({ waitFor : ScannedRobotEventSet });
 		if(e1.getData().getDistance() < 50 && robot.getEnergy() > 50){
-			bsync({request : Fire(3)});
+			bsync({request : Fire(3), block: SetTurnGunRight(5)});
+
 
 		} else {
-			bsync({request : Fire(1)});
+			bsync({request : Fire(1), block: SetTurnGunRight(5)});
 		}
-		bsync({request : Scan()});
+		bsync({request : Scan(), block: SetTurnGunRight(5)});
 	}
 });
 
@@ -53,13 +65,13 @@ bp.registerBThread("onHitByBullet", function () {
     var angle = null;
 	while(true){
 		var e1 = bsync({waitFor : HitByBulletEventSet});
-		angle = 90 - (robot.getHeading() - e1.getData().getHeading());// TODO: add "normalRelativeAngleDegrees" from utilities and remove patch
-		//bp.log.info(Utils.normalRelativeAngleDegrees(angle));//TODO: still need to debug this
-        angle = (angle %= 360.0) >= 0.0 ? (angle < 180.0 ? angle : angle - 360.0) : (angle >= -180.0 ? angle : angle + 360.0);
-        bsync({request : TurnRight(angle)});
-        bsync({request : Ahead(dist)});
+		angle = Utils.normalRelativeAngleDegrees(90 - (robot.getHeading() - e1.getData().getHeading()));
+        bsync({request : SetTurnRight(angle), block: SetTurnGunRight(5)});
+        bsync({waitFor : RevEndedEventSet, block: SetTurnGunRight(5)});
+        bsync({request : SetAhead(dist), block: SetTurnGunRight(5)});
+        bsync({waitFor : MotionEndedEventSet, block: SetTurnGunRight(5)});
         dist *= -1;
-        bsync({request : Scan()});
+        bsync({request : Scan(), block: SetTurnGunRight(5)});
 
 	}
 });
@@ -68,9 +80,9 @@ bp.registerBThread("onHitRobot", function () {
 	var turnGunAmt = null;
 	while(true){
 		var e1 = bsync({waitFor : HitRobotEventSet});
-        turnGunAmt = e1.getData().getBearing() + robot.getHeading() - robot.getGunHeading();// TODO: add "normalRelativeAngleDegrees" from utilities and remove patch
-        turnGunAmt = (turnGunAmt %= 360.0) >= 0.0 ? (turnGunAmt < 180.0 ? turnGunAmt : turnGunAmt - 360.0) : (turnGunAmt >= -180.0 ? turnGunAmt : turnGunAmt + 360.0);
-        bsync({request :TurnGunRight(turnGunAmt)});
+        turnGunAmt = Utils.normalRelativeAngleDegrees(e1.getData().getBearing() + robot.getHeading() - robot.getGunHeading());
+        bsync({request :SetTurnGunRight(turnGunAmt), block: SetTurnGunRight(5)});
+        bsync({waitFor : GunRevEndedEventSet, block: SetTurnGunRight(5)});
         bsync({request : Fire(3)});
 	}
 });

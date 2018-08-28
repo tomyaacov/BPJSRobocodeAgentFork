@@ -1,5 +1,6 @@
 package il.ac.bgu.cs.bp.bpjsrobot;
 
+import il.ac.bgu.cs.bp.bpjs.eventselection.SimpleEventSelectionStrategy;
 import il.ac.bgu.cs.bp.bpjsrobot.events.sensors.*;
 import org.mozilla.javascript.Scriptable;
 import il.ac.bgu.cs.bp.bpjs.bprogram.runtimeengine.SingleResourceBProgram;
@@ -10,7 +11,7 @@ public class CrazyBPjsRobot extends BPjsRobot {
 
     BPjsRobot robot = this;
 
-    protected SingleResourceBProgram bprog = new SingleResourceBProgram("CrazyBP.js", "CrazyBP.js", new RobocodeEventSelectionStrategy()) {
+    protected SingleResourceBProgram bprog = new SingleResourceBProgram("CrazyBP.js", "CrazyBP.js", new SimpleEventSelectionStrategy()) {
         protected void setupProgramScope(Scriptable scope) {
             putInGlobalScope("robot", robot);// enables getting robots status
             super.setupProgramScope(scope);
@@ -44,6 +45,10 @@ public class CrazyBPjsRobot extends BPjsRobot {
 
         if (e.getStatus().getTurnRemaining() == 0) {
             bprog.enqueueExternalEvent(RevEnded.event);
+        }
+
+        if (e.getStatus().getGunTurnRemaining() == 0) {
+            bprog.enqueueExternalEvent(GunRevEnded.event);
         }
     }
 

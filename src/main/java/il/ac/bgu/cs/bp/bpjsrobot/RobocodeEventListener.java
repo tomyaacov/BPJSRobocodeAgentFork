@@ -31,8 +31,10 @@ public class RobocodeEventListener implements BProgramListener {
 
 		if (theEvent instanceof RobotActionEvent) {
 			((RobotActionEvent) theEvent).act(robot);
-			robot.execute(); //TODO: for testing - remove after
+			//robot.execute(); //TODO: for testing - remove after
+			robot.setDebugProperty("RobotActionEvent", theEvent.toString());
 		} else if (theEvent instanceof RobotSensorEvent) {
+			robot.setDebugProperty("RobotSensorEvent", theEvent.toString());
 		} else {
 			robot.out.println("Uhandled BPjs event:" + theEvent);
 		}
@@ -41,6 +43,7 @@ public class RobocodeEventListener implements BProgramListener {
 
 	@Override
 	public void superstepDone(BProgram bp) {
+		robot.setDebugProperty("superstepDone", "");
 		robot.execute();
 	}
 

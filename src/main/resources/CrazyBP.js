@@ -16,16 +16,9 @@ var ScannedRobotEventSet = bp.EventSet('', function(e) {
 var HitRobotEventSet = bp.EventSet('', function(e) {
     return (e instanceof HitRobot);
 });
-
-function reverseDirection() {
-    if (movingForward) {
-        bsync({request : SetBack(40000)});
-        movingForward = false;
-    } else {
-        bsync({request : SetAhead(40000)});
-        movingForward = true;
-    }
-}
+var HitRobotWallEventSet = bp.EventSet('', function(e) {
+    return (e instanceof HitRobot) || (e instanceof HitWall);
+});
 
 bp.registerBThread("run", function() {
     //bsync({request : SetBodyColor(new Color(0, 200, 0))});//TODO: figure out why new colors cant be initialized
@@ -45,13 +38,6 @@ bp.registerBThread("run", function() {
     }
 });
 
-bp.registerBThread("onHitWall", function() {
-    while(true){
-        bsync({waitFor : HitWallEventSet});
-        reverseDirection();
-    }
-});
-
 bp.registerBThread("onScannedRobot", function() {
     while(true){
         bsync({waitFor : ScannedRobotEventSet});
@@ -59,11 +45,18 @@ bp.registerBThread("onScannedRobot", function() {
     }
 });
 
-bp.registerBThread("onHitRobot", function() {
+bp.registerBThread("onHit", function() {
     while(true){
-        var e = bsync({waitFor : HitRobotEventSet});
-        reverseDirection();
+        var e = bsync({waitFor : HitRobotWallEventSet});
+        if((e instanceof HitWall) || (e instanceof HitRobot && e.getData().isMyFault())){
+            if (movingForward) {
+                bsync({request : SetBack(40000)});
+                movingForward = false;
+            } else {
+                bsync({request : SetAhead(40000)});
+                movingForward = true;
+            }
+        }
     }
 });
-
 

@@ -92,7 +92,7 @@ public class Crazy extends AdvancedRobot {
 	}
 
 	/**
-	 * onHitRobot:  Back up!
+	 * onHitRobot:   up!
 	 */
 	public void onHitRobot(HitRobotEvent e) {
 		// If we're moving the other robot, reverse!
