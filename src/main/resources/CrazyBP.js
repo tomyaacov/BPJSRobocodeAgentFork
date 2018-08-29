@@ -21,11 +21,11 @@ var HitRobotWallEventSet = bp.EventSet('', function(e) {
 });
 
 bp.registerBThread("run", function() {
-    //bsync({request : SetBodyColor(new Color(0, 200, 0))});//TODO: figure out why new colors cant be initialized
-    //bsync({request : SetGunColor(new Color(0, 150, 50))});
-    //bsync({request : SetRadarColor(new Color(0, 100, 100))});
-    //bsync({request : SetScanColor(new Color(255, 200, 200))});
-    //bsync({request : SetBulletColor(new Color(255, 255, 100))});
+    bsync({request : SetBodyColor(new Color(0/255, 200/255, 0/255))});//TODO: figure out why new colors cant be initialized as int
+    bsync({request : SetGunColor(new Color(0/255, 150/255, 50/255))});
+    bsync({request : SetRadarColor(new Color(0/255, 100/255, 100/255))});
+    bsync({request : SetScanColor(new Color(255/255, 200/255, 200/255))});
+    bsync({request : SetBulletColor(new Color(255/255, 255/255, 100/255))});
     while (true) {
         bsync({request : SetAhead(4000)});
         movingForward = true;
