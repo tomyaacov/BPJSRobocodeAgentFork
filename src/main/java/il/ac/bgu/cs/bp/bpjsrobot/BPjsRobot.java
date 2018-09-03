@@ -64,7 +64,10 @@ public class BPjsRobot extends AdvancedRobot {
 		bprog.enqueueExternalEvent(new Status(e));
 	}
 
-	@Override
+    @Override
+    public void onWin(WinEvent e) { bprog.enqueueExternalEvent(new Win(e)); }
+
+    @Override
 	public void onScannedRobot(ScannedRobotEvent e) {
 		bprog.enqueueExternalEvent(new ScannedRobot(e));
 	}
