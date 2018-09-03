@@ -4,20 +4,9 @@ import robocode.HitWallEvent;
 
 @SuppressWarnings("serial")
 public class HitWall extends RobotSensorEvent {
-    HitWallEvent event;
 
     public HitWall(HitWallEvent event) {
-        super("HitWall");
-        this.event = event;
+        super("HitWall", event);
     }
 
-    @Override
-    public String toString() {
-        return "HitWall [event=" + event + "]";
-    }
-
-    @Override
-    public Object getData() {
-        return event;
-    }
 }

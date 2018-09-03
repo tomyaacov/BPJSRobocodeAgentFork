@@ -6,15 +6,10 @@ import robocode.StatusEvent;
 public class RevEnded extends RobotSensorEvent {
 
 	public static RevEnded event  = new RevEnded(null);
-	
 
 	public RevEnded(StatusEvent e) {
-		super("RevEnded");
+		super("RevEnded", e);
 	}
 
-	@Override
-	public String toString() {
-		return "RevEnded";
-	}
 
 }

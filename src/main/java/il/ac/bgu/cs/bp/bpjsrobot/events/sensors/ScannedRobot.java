@@ -4,20 +4,9 @@ import robocode.ScannedRobotEvent;
 
 @SuppressWarnings("serial")
 public class ScannedRobot extends RobotSensorEvent {
-	ScannedRobotEvent event;
 
 	public ScannedRobot(ScannedRobotEvent event) {
-		super("ScannedRobot");// TODO: shouldnt we add event to the constructor or override get data
-		this.event = event;
+		super("ScannedRobot", event);
 	}
 
-	@Override
-	public String toString() {
-		return "ScannedRobot [event=" + event + "]";
-	}
-
-	@Override
-	public Object getData() {
-		return event;
-	}
 }

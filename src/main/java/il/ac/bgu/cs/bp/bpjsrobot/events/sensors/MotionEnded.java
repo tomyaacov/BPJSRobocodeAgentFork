@@ -6,15 +6,10 @@ import robocode.StatusEvent;
 public class MotionEnded extends RobotSensorEvent {
 
 	public static MotionEnded event  = new MotionEnded(null);
-	
 
 	public MotionEnded(StatusEvent e) {
-		super("MotionEnded");
+		super("MotionEnded", e);
 	}
 
-	@Override
-	public String toString() {
-		return "MotionEnded";
-	}
 
 }

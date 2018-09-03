@@ -7,14 +7,8 @@ public class GunRevEnded extends RobotSensorEvent {
 
     public static GunRevEnded event  = new GunRevEnded(null);
 
-
     public GunRevEnded(StatusEvent e) {
-        super("GunRevEnded");
-    }
-
-    @Override
-    public String toString() {
-        return "GunRevEnded";
+        super("GunRevEnded", e);
     }
 
 }

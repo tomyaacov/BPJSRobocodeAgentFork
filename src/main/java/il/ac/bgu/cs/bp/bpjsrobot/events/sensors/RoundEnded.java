@@ -5,16 +5,9 @@ import robocode.RoundEndedEvent;
 @SuppressWarnings("serial")
 public class RoundEnded extends RobotSensorEvent {
 
-	private RoundEndedEvent e;
-
 	public RoundEnded(RoundEndedEvent e) {
-		super("RoundEnded");
-		this.e = e;
+		super("RoundEnded", e);
 	}
 
-	@Override
-	public String toString() {
-		return "RoundEndedEvent [e=" + e + "]";
-	}
 
 }

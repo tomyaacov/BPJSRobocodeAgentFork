@@ -4,20 +4,9 @@ import robocode.HitByBulletEvent;
 
 @SuppressWarnings("serial")
 public class HitByBullet extends RobotSensorEvent {
-    HitByBulletEvent event;
 
     public HitByBullet(HitByBulletEvent event) {
-        super("HitByBullet");
-        this.event = event;
+        super("HitByBullet", event);
     }
 
-    @Override
-    public String toString() {
-        return "HitByBullet [event=" + event + "]";
-    }
-
-    @Override
-    public Object getData() {
-        return event;
-    }
 }
