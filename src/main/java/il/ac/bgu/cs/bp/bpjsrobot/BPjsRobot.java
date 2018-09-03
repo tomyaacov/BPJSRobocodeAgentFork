@@ -10,7 +10,7 @@ import robocode.*;
 public class BPjsRobot extends AdvancedRobot {
 
 	BPjsRobot robot = this;
-	
+
 	protected SingleResourceBProgram bprog = new SingleResourceBProgram("MyFirstRobot.js", "MyFirstRobot.js", new RobocodeEventSelectionStrategy()) {
 		protected void setupProgramScope(Scriptable scope) {
 			putInGlobalScope("robot", robot);// enables getting robots status
@@ -37,8 +37,6 @@ public class BPjsRobot extends AdvancedRobot {
 
 	@Override
 	public void onStatus(StatusEvent e) {
-		bprog.enqueueExternalEvent(new Status(e));
-
 		if (e.getStatus().getDistanceRemaining() == 0) {
 			bprog.enqueueExternalEvent(MotionEnded.event);
 		}
@@ -50,6 +48,7 @@ public class BPjsRobot extends AdvancedRobot {
 		if (e.getStatus().getGunTurnRemaining() == 0) {
 			bprog.enqueueExternalEvent(GunRevEnded.event);
 		}
+		bprog.enqueueExternalEvent(new Status(e));
 	}
 
 	@Override
