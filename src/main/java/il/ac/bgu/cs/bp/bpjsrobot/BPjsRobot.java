@@ -1,5 +1,6 @@
 package il.ac.bgu.cs.bp.bpjsrobot;
 
+import il.ac.bgu.cs.bp.bpjs.eventselection.SimpleEventSelectionStrategy;
 import il.ac.bgu.cs.bp.bpjsrobot.events.sensors.*;
 import org.mozilla.javascript.Scriptable;
 
@@ -10,13 +11,25 @@ import robocode.*;
 public class BPjsRobot extends AdvancedRobot {
 
 	BPjsRobot robot = this;
+	protected SingleResourceBProgram bprog;
 
-	protected SingleResourceBProgram bprog = new SingleResourceBProgram("MyFirstRobot.js", "MyFirstRobot.js", new RobocodeEventSelectionStrategy()) {
-		protected void setupProgramScope(Scriptable scope) {
-			putInGlobalScope("robot", robot);// enables getting robots status
-			super.setupProgramScope(scope);
-		}
-	};
+    public BPjsRobot(){
+        bprog = new SingleResourceBProgram("MyFirstRobot.js", "MyFirstRobot.js", new SimpleEventSelectionStrategy()) {
+            protected void setupProgramScope(Scriptable scope) {
+                putInGlobalScope("robot", robot);// enables getting robots status
+                super.setupProgramScope(scope);
+            }
+        };
+    }
+
+	public BPjsRobot(String resourceName){
+	    bprog = new SingleResourceBProgram(resourceName, resourceName, new SimpleEventSelectionStrategy()) {
+            protected void setupProgramScope(Scriptable scope) {
+                putInGlobalScope("robot", robot);// enables getting robots status
+                super.setupProgramScope(scope);
+            }
+        };
+    }
 
 	public void run() {
 		System.out.println("---- start -----");
