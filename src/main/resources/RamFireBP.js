@@ -34,10 +34,10 @@ bp.registerBThread("onScannedRobot", function() {
     while(true){
         var e = bsync({waitFor : ScannedRobotEventSet});
         bsync({request : SetTurnRight(e.getData().getBearing())});
-        bsync({waitFor : RevEndedEventSet});
-        bsync({request : SetAhead(e.getData().getDistance() + 5)});
-        bsync({waitFor : MotionEndedEventSet});
-        bsync({request : Scan()});
+        bsync({waitFor : RevEndedEventSet, block : [SetTurnRight(5), SetTurnRight(-5)]});
+        bsync({request : SetAhead(e.getData().getDistance() + 5), block : [SetTurnRight(5), SetTurnRight(-5)]});
+        bsync({waitFor : MotionEndedEventSet, block : [SetTurnRight(5), SetTurnRight(-5)]});
+        bsync({request : Scan(), block : [SetTurnRight(5), SetTurnRight(-5)]});
 
     }
 });
@@ -46,21 +46,21 @@ bp.registerBThread("onHitRobot", function () {
     while(true){
         var e = bsync({waitFor : HitRobotEventSet});
         bsync({request : SetTurnRight(e.getData().getBearing())});
-        bsync({waitFor : RevEndedEventSet});
+        bsync({waitFor : RevEndedEventSet, block : [SetTurnRight(5), SetTurnRight(-5)]});
         var energy = e.getData().getEnergy();
         if (energy > 16) {
-            bsync({request : Fire(3)});
+            bsync({request : Fire(3), block : [SetTurnRight(5), SetTurnRight(-5)]});
         } else if (energy > 10) {
-            bsync({request : Fire(2)});
+            bsync({request : Fire(2), block : [SetTurnRight(5), SetTurnRight(-5)]});
         } else if (energy > 4) {
-            bsync({request : Fire(1)});
+            bsync({request : Fire(1), block : [SetTurnRight(5), SetTurnRight(-5)]});
         } else if (energy > 2) {
-            bsync({request : Fire(0.5)});
+            bsync({request : Fire(0.5), block : [SetTurnRight(5), SetTurnRight(-5)]});
         } else if (energy > .4) {
-            bsync({request : Fire(0.1)});
+            bsync({request : Fire(0.1), block : [SetTurnRight(5), SetTurnRight(-5)]});
         }
-        bsync({request : SetAhead(40)});
-        bsync({waitFor : MotionEndedEventSet});
+        bsync({request : SetAhead(40), block : [SetTurnRight(5), SetTurnRight(-5)]});
+        bsync({waitFor : MotionEndedEventSet, block : [SetTurnRight(5), SetTurnRight(-5)]});
     }
 });
 
