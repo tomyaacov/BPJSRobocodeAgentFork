@@ -12,6 +12,7 @@ public class BPjsRobot extends AdvancedRobot {
 
 	BPjsRobot robot = this;
 	protected SingleResourceBProgram bprog;
+	StatusEvent lastStatus;
 
     public BPjsRobot(){
         bprog = new SingleResourceBProgram("MyFirstRobot.js", "MyFirstRobot.js", new SimpleEventSelectionStrategy()) {
@@ -36,7 +37,11 @@ public class BPjsRobot extends AdvancedRobot {
 		bprog.setDaemonMode(true);
 		bprog.addListener(new StreamLoggerListener());
 		bprog.addListener(new RobocodeEventListener(this));
-
+		//adding custom events
+		addCustomEvent(new MoveCompleteCondition(this));
+		addCustomEvent(new GunTurnCompleteCondition(this));
+		addCustomEvent(new RadarTurnCompleteCondition(this));
+		addCustomEvent(new TurnCompleteCondition(this));
 		// go!
 		try {
 			bprog.start();
@@ -49,19 +54,30 @@ public class BPjsRobot extends AdvancedRobot {
 	}
 
 	@Override
+	public void onCustomEvent(CustomEvent event) {
+		if(event.getCondition() instanceof MoveCompleteCondition){ bprog.enqueueExternalEvent(MotionEnded.event); }
+		if(event.getCondition() instanceof GunTurnCompleteCondition){ bprog.enqueueExternalEvent(GunRevEnded.event); }
+		if(event.getCondition() instanceof RadarTurnCompleteCondition){ bprog.enqueueExternalEvent(RadarRevEnded.event); }
+		if(event.getCondition() instanceof TurnCompleteCondition){ bprog.enqueueExternalEvent(RevEnded.event); }
+	}
+
+	@Override
 	public void onStatus(StatusEvent e) {
-		if (e.getStatus().getDistanceRemaining() == 0) {
-			bprog.enqueueExternalEvent(MotionEnded.event);
-		}
-
-		if (e.getStatus().getTurnRemaining() == 0) {
-			bprog.enqueueExternalEvent(RevEnded.event);
-		}
-
-		if (e.getStatus().getGunTurnRemaining() == 0) {
-			bprog.enqueueExternalEvent(GunRevEnded.event);
-		}
+    	//if(lastStatus != null) {
+    	//	if (e.getStatus().getDistanceRemaining() == 0 && lastStatus.getStatus().getDistanceRemaining() != 0) {
+		//		bprog.enqueueExternalEvent(MotionEnded.event);
+		//	}
+//
+		//	if (e.getStatus().getTurnRemaining() == 0 && lastStatus.getStatus().getTurnRemaining() != 0) {
+		//		bprog.enqueueExternalEvent(RevEnded.event);
+		//	}
+//
+		//	if (e.getStatus().getGunTurnRemaining() == 0 && lastStatus.getStatus().getGunTurnRemaining() != 0) {
+		//		bprog.enqueueExternalEvent(GunRevEnded.event);
+		//	}
+		//}
 		bprog.enqueueExternalEvent(new Status(e));
+		//lastStatus = e;
 	}
 
     @Override

@@ -31,7 +31,6 @@ public class RobocodeEventListener implements BProgramListener {
 
 		if (theEvent instanceof RobotActionEvent) {
 			((RobotActionEvent) theEvent).act(robot);
-			//robot.execute(); //TODO: for testing - remove after
 			robot.setDebugProperty("RobotActionEvent", theEvent.toString());
 		} else if (theEvent instanceof RobotSensorEvent) {
 			robot.setDebugProperty("RobotSensorEvent", theEvent.toString());

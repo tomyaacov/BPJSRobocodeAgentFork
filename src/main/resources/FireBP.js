@@ -81,7 +81,7 @@ bp.registerBThread("onHitRobot", function () {
 	while(true){
 		var e1 = bsync({waitFor : HitRobotEventSet});
         turnGunAmt = Utils.normalRelativeAngleDegrees(e1.getData().getBearing() + robot.getHeading() - robot.getGunHeading());
-        bsync({request :SetTurnGunRight(turnGunAmt), block: SetTurnGunRight(5)});
+        bsync({request :SetTurnGunRight(turnGunAmt)});
         bsync({waitFor : GunRevEndedEventSet, block: SetTurnGunRight(5)});
         bsync({request : Fire(3)});
 	}
