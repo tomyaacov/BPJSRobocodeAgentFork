@@ -13,6 +13,7 @@ public class BPjsRobot extends AdvancedRobot {
 	BPjsRobot robot = this;
 	protected SingleResourceBProgram bprog;
 	StatusEvent lastStatus;
+	public long lastExecute = System.nanoTime();
 
     public BPjsRobot(){
         bprog = new SingleResourceBProgram("MyFirstRobot.js", "MyFirstRobot.js", new SimpleEventSelectionStrategy()) {
@@ -83,7 +84,11 @@ public class BPjsRobot extends AdvancedRobot {
     @Override
     public void onWin(WinEvent e) { bprog.enqueueExternalEvent(new Win(e)); }
 
-    @Override
+	@Override
+	public void onDeath(DeathEvent event) {
+    	bprog.enqueueExternalEvent(new Death(event)); }
+
+	@Override
 	public void onScannedRobot(ScannedRobotEvent e) {
 		bprog.enqueueExternalEvent(new ScannedRobot(e));
 	}
@@ -99,6 +104,15 @@ public class BPjsRobot extends AdvancedRobot {
 	}
 
 	@Override
+	public void onSkippedTurn(SkippedTurnEvent event) {
+		robot.setDebugProperty("SkippedTurn","");
+	}
+
+	@Override
 	public void onHitWall(HitWallEvent e) { bprog.enqueueExternalEvent(new HitWall(e));}
 
+	@Override
+	public void onRoundEnded(RoundEndedEvent event) {
+    	System.out.println("----round ended----");
+    	bprog.setDaemonMode(false); }
 }

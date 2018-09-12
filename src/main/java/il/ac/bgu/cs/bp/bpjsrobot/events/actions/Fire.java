@@ -13,6 +13,8 @@ public class Fire extends RobotActionEvent {
 
     @Override
     public void act(BPjsRobot robot) {
+        robot.setDebugProperty("Fire", Long.toString(System.nanoTime() - robot.lastExecute));
+        robot.lastExecute = System.nanoTime();
         robot.fire(power);
     }
 

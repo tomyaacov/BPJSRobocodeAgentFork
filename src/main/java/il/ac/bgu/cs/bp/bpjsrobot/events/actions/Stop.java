@@ -11,9 +11,14 @@ public class Stop extends RobotActionEvent {
 		this.overwrite = overwrite;
 	}
 
+	public Stop() {
+		super("Stop");
+		this.overwrite = false;
+	}
+
 	@Override
 	public void act(BPjsRobot robot) {
-		robot.setStop();
+		robot.stop(overwrite);
 	}
 
 	@Override

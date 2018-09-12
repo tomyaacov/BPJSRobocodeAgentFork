@@ -42,7 +42,8 @@ public class RobocodeEventListener implements BProgramListener {
 
 	@Override
 	public void superstepDone(BProgram bp) {
-		robot.setDebugProperty("superstepDone", "");
+		robot.setDebugProperty("superstepDone", Long.toString(System.nanoTime() - robot.lastExecute));
+		robot.lastExecute = System.nanoTime();
 		robot.execute();
 	}
 
